@@ -1,29 +1,26 @@
 import { useState, useEffect } from "react";
-import { connect, arbitaryDBRequest } from "./lib/db";
-import { loadTestFile } from "./lib/load";
+import { connect, isNotSetup } from "./lib/db/setup";
+import { loadOracle } from "./lib/db/load";
 
 function App() {
-  const [dbInfo, setDBInfo] = useState<{ name: string; count: number }>();
+  const [isReady, setIsReady] = useState<boolean>(false);
+
   useEffect(() => {
-    async function test() {
+    async function setup() {
       const db = await connect();
-      console.log("start loading");
-      loadTestFile(db);
-      await arbitaryDBRequest((store) => {
-        const count = store.count();
-        count.onsuccess = () => {
-          setDBInfo({ name: db.name, count: count.result });
-        };
-      }, db);
+      if (await isNotSetup(db)) await loadOracle(db);
+      setIsReady(true);
     }
-    test();
+    setup();
   }, []);
 
-  return (
-    <>
-      <div className="border-2 rounded">IndexedDB name is {dbInfo?.count}</div>
-    </>
-  );
+  if (isReady) {
+    return (
+      <>
+        <div className="border-2 rounded">IndexedDB name is</div>
+      </>
+    );
+  }
 }
 
 export default App;
