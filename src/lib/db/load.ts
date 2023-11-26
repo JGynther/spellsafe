@@ -1,8 +1,8 @@
-import oracleData from "../../../oracle.json";
+const loadOracle = async (db: IDBDatabase) => {
+  // Lazy load oracle.json for faster load times after initial setup
+  const oracleData = await import("../../../oracle.json");
+  const oracle = oracleData.default as Record<string, unknown>[];
 
-const oracle = oracleData as Record<string, unknown>[];
-
-export const loadOracle = (db: IDBDatabase) => {
   return new Promise<void>((resolve) => {
     const start = Date.now();
     const transaction = db.transaction("cards", "readwrite");
@@ -14,3 +14,5 @@ export const loadOracle = (db: IDBDatabase) => {
       );
   });
 };
+
+export { loadOracle };
