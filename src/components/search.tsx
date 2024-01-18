@@ -1,9 +1,14 @@
 import { type SearchIndex, query } from "../lib/db/search";
-import CardView from "../components/card";
 import type { Card, Cards } from "../lib/db";
 import { useState } from "react";
 
-const Search: React.FC<{ index: SearchIndex }> = ({ index }) => {
+import CardView from "./card";
+import SimilarCards from "./similar";
+
+const Search: React.FC<{ index: SearchIndex; db: IDBDatabase }> = ({
+  index,
+  db,
+}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [autoComplete, setAutoComplete] = useState<Cards>([]);
   const [result, setResult] = useState<Card>();
@@ -56,7 +61,17 @@ const Search: React.FC<{ index: SearchIndex }> = ({ index }) => {
         Search
       </button>
 
-      {result && <CardView card={result} />}
+      {result && (
+        <>
+          <CardView card={result} />
+          <SimilarCards
+            id={result.id}
+            index={index}
+            db={db}
+            setCard={setResult}
+          />
+        </>
+      )}
     </div>
   );
 };

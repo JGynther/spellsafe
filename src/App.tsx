@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { connect, isNotSetup } from "./lib/db/setup";
-import { loadOracle } from "./lib/db/load";
+import { loadDatabase } from "./lib/db/load";
 import { createSearchIndex } from "./lib/db/search";
 
 import type { SearchIndex } from "./lib/db/search";
@@ -17,7 +17,7 @@ function App() {
     async function setup() {
       const db = await connect();
 
-      if (await isNotSetup(db)) await loadOracle(db);
+      if (await isNotSetup(db)) await loadDatabase(db);
 
       const index = await createSearchIndex(db);
 
@@ -32,7 +32,7 @@ function App() {
     return (
       <div className="min-h-screen bg-[#e5decf] p-5">
         <div className="font-semibold text-2xl">🗝️ SpellSafe</div>
-        <Search index={searchIndex} />
+        <Search index={searchIndex} db={database} />
       </div>
     );
   }
