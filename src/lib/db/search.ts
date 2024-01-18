@@ -34,11 +34,20 @@ const matchStringFieldFuzzy = (
   return index.filter((card) => card[field]?.includes(value)).slice(0, n);
 };
 
+const matchBatchStringsExact = (
+  field: FIELDS,
+  values: string[],
+  index: SearchIndex
+) => {
+  return index.filter((card) => values.includes(card[field]));
+};
+
 type Query = {
   index: (index: SearchIndex) => {
     where: (field: FIELDS) => {
       is: (value: string) => Card;
       isLike: (value: string) => Cards;
+      isBatch: (values: string[]) => Cards;
     };
   };
 };
@@ -51,6 +60,7 @@ const query: Query = {
         return {
           is: (value) => matchFieldExact(field, value, index),
           isLike: (value) => matchStringFieldFuzzy(field, value, index),
+          isBatch: (values) => matchBatchStringsExact(field, values, index),
         };
       },
     };

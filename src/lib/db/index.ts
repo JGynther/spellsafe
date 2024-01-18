@@ -23,5 +23,22 @@ const getCards = (db: IDBDatabase): Promise<Cards> => {
   });
 };
 
-export { getCards };
+type Neighbours = {
+  id: string;
+  neighbours: string[];
+};
+
+const getNeighboursForID = (
+  id: string,
+  db: IDBDatabase
+): Promise<Neighbours> => {
+  return new Promise((resolve) => {
+    const transaction = db.transaction(Stores.Neighbours, "readonly");
+    const store = transaction.objectStore(Stores.Neighbours);
+    const request = store.get(id);
+    request.onsuccess = () => resolve(request.result);
+  });
+};
+
+export { getCards, getNeighboursForID, Stores };
 export type { Card, Cards };

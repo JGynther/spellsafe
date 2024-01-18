@@ -1,6 +1,7 @@
 enum Stores {
   Cards = "cards",
   Collection = "collection",
+  Neighbours = "neighbours",
 }
 
 const connect = (): Promise<IDBDatabase> => {
@@ -17,6 +18,10 @@ const connect = (): Promise<IDBDatabase> => {
 
       if (!db.objectStoreNames.contains(Stores.Collection)) {
         db.createObjectStore(Stores.Collection, { keyPath: "id" });
+      }
+
+      if (!db.objectStoreNames.contains(Stores.Neighbours)) {
+        db.createObjectStore(Stores.Neighbours, { keyPath: "id" });
       }
     };
 
