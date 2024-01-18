@@ -3,8 +3,13 @@ import { Stores } from "./setup";
 type Card = {
   id: string;
   name: string;
-  image_uris?: { small: string };
+  image_uris?: { small: string; normal: string; large: string };
   prices: { eur: string; eur_foil: string };
+  oracle_text?: string;
+  type_line: string;
+  mana_cost: string;
+  power?: string;
+  toughness?: string;
 };
 
 type Cards = Card[];
