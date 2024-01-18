@@ -13,8 +13,8 @@ const CardView: React.FC<{ card: Card }> = ({ card }) => {
         </span>
         <span>{card.type_line}</span>
         <div className="space-y-2 max-w-sm">
-          {card.oracle_text?.split("\n").map((line) => (
-            <p>{line}</p>
+          {card.oracle_text?.split("\n").map((line, i) => (
+            <p key={i}>{line}</p>
           ))}
         </div>
         {card.power && card.toughness && (
