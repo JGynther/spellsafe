@@ -37,9 +37,35 @@ const loadNeighbours = async (db: IDBDatabase) => {
   });
 };
 
+const bootstrapCollection = async (db: IDBDatabase) => {
+  const oracleData = await import("../../../oracle.json");
+  const oracle = oracleData.default as Record<string, unknown>[];
+  const collection = oracle.map((card) => {
+    return {
+      id: card.id,
+      in_collection: {
+        count: 0,
+        count_foil: 0,
+      },
+      in_deck: {
+        deck_ids: [],
+      },
+      trading: false,
+    };
+  });
+
+  return new Promise<void>((resolve) => {
+    const transaction = db.transaction(Stores.Collection, "readwrite");
+    const store = transaction.objectStore(Stores.Collection);
+    collection.forEach((card) => store.put(card));
+    transaction.oncomplete = () => resolve();
+  });
+};
+
 const loadDatabase = async (db: IDBDatabase) => {
   await loadOracle(db);
   await loadNeighbours(db);
+  await bootstrapCollection(db);
 };
 
 export { loadDatabase };
