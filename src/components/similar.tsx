@@ -31,11 +31,11 @@ const SimilarCards: React.FC<{
             >
               <img
                 src={card.image_uris?.normal}
-                className="rounded-[4.5%] overflow-hidden w-36"
+                className="rounded-[4.5%] w-40 border border-neutral-700"
                 onClick={() => setCard(card)}
                 role="button"
               />
-              <span className="text-xs">{card.name}</span>
+              <span className="text-xs mt-2 font-semibold">{card.name}</span>
             </div>
           );
         })}
