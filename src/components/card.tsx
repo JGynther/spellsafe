@@ -2,7 +2,7 @@ import type { Card } from "../lib/db";
 
 const CardView: React.FC<{ card: Card }> = ({ card }) => {
   return (
-    <div className="flex py-5 space-x-5">
+    <div className="flex py-5 space-x-5 mt-5">
       <img
         src={card.image_uris?.normal}
         className="rounded-[4.5%] overflow-hidden max-w-xs"

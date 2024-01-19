@@ -9,7 +9,6 @@ const Search: React.FC<{ index: SearchIndex; db: IDBDatabase }> = ({
   index,
   db,
 }) => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [autoComplete, setAutoComplete] = useState<Cards>([]);
   const [result, setResult] = useState<Card>();
 
@@ -17,11 +16,11 @@ const Search: React.FC<{ index: SearchIndex; db: IDBDatabase }> = ({
     <div className="flex flex-col">
       <input
         type="text"
-        placeholder="Black Lotus"
-        className="bg-neutral-800 outline-none p-2 rounded-t-lg border-b border-neutral-700"
-        value={searchQuery}
+        placeholder="Search here... e.g. Black Lotus"
+        className={`bg-neutral-800 outline-none px-5 py-3 text-lg border border-neutral-700 ${
+          autoComplete.length > 0 ? "rounded-t-lg" : "rounded-lg"
+        }`}
         onChange={(event) => {
-          setSearchQuery(event.target.value);
           setAutoComplete(
             query
               .index(index)
@@ -32,15 +31,14 @@ const Search: React.FC<{ index: SearchIndex; db: IDBDatabase }> = ({
       />
 
       {autoComplete.length > 0 && (
-        <div className="bg-neutral-800 divide-y divide-neutral-700 rounded-b-lg mb-5 overflow-hidden">
+        <div className="bg-neutral-800 divide-y divide-neutral-700 border-neutral-700 border-x border-b rounded-b-lg overflow-hidden">
           {autoComplete.map((card) => {
             return (
               <div
                 key={card.id}
-                className="p-2 hover:bg-neutral-700"
+                className="px-5 py-3 hover:bg-neutral-700"
                 onClick={() => {
-                  setSearchQuery(card.name!);
-                  setResult(query.index(index).where("name").is(card.name!));
+                  setResult(query.index(index).where("name").is(card.name));
                   setAutoComplete([]);
                 }}
                 role="button"
@@ -51,15 +49,6 @@ const Search: React.FC<{ index: SearchIndex; db: IDBDatabase }> = ({
           })}
         </div>
       )}
-
-      <button
-        className="bg-black text-white mt-5 rounded-lg py-2"
-        onClick={() => {
-          setResult(query.index(index).where("name").is(searchQuery));
-        }}
-      >
-        Search
-      </button>
 
       {result && (
         <>
