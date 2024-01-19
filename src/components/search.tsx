@@ -14,11 +14,11 @@ const Search: React.FC<{ index: SearchIndex; db: IDBDatabase }> = ({
   const [result, setResult] = useState<Card>();
 
   return (
-    <div className="flex flex-col p-5 mt-10">
+    <div className="flex flex-col">
       <input
         type="text"
         placeholder="Black Lotus"
-        className="border-2 outline-none p-2 rounded-t-lg"
+        className="bg-neutral-800 outline-none p-2 rounded-t-lg border-b border-neutral-700"
         value={searchQuery}
         onChange={(event) => {
           setSearchQuery(event.target.value);
@@ -32,12 +32,12 @@ const Search: React.FC<{ index: SearchIndex; db: IDBDatabase }> = ({
       />
 
       {autoComplete.length > 0 && (
-        <div className="bg-white divide-y-2 border-x-2 rounded-b-lg mb-5">
+        <div className="bg-neutral-800 divide-y divide-neutral-700 rounded-b-lg mb-5 overflow-hidden">
           {autoComplete.map((card) => {
             return (
               <div
                 key={card.id}
-                className="p-2 hover:bg-neutral-100"
+                className="p-2 hover:bg-neutral-700"
                 onClick={() => {
                   setSearchQuery(card.name!);
                   setResult(query.index(index).where("name").is(card.name!));

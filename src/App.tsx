@@ -30,8 +30,7 @@ function App() {
 
   if (isReady && database && searchIndex) {
     return (
-      <div className="min-h-screen bg-[#e5decf] p-5">
-        <div className="font-semibold text-2xl">🗝️ SpellSafe</div>
+      <div className="min-h-screen bg-neutral-900 p-10 text-white">
         <Search index={searchIndex} db={database} />
       </div>
     );
