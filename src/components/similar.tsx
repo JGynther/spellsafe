@@ -31,7 +31,7 @@ const SimilarCards: React.FC<{
             >
               <img
                 src={card.image_uris?.normal}
-                className="rounded-[3.5%] overflow-hidden w-36"
+                className="rounded-[4.5%] overflow-hidden w-36"
                 onClick={() => setCard(card)}
                 role="button"
               />

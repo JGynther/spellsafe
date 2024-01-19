@@ -5,7 +5,7 @@ const CardView: React.FC<{ card: Card }> = ({ card }) => {
     <div className="flex py-5 space-x-5">
       <img
         src={card.image_uris?.normal}
-        className="rounded-[3.5%] overflow-hidden max-w-xs"
+        className="rounded-[4.5%] overflow-hidden max-w-xs"
       />
       <div className="flex flex-col space-y-5 max-w-md">
         <span className="text-xl font-bold">
