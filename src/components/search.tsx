@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import CardView from "./card";
 import SimilarCards from "./similar";
+import CollectionEntry from "./collectionEntry";
 
 const Search: React.FC<{ index: SearchIndex; db: IDBDatabase }> = ({
   index,
@@ -53,6 +54,7 @@ const Search: React.FC<{ index: SearchIndex; db: IDBDatabase }> = ({
       {result && (
         <>
           <CardView card={result} />
+          <CollectionEntry id={result.id} db={db} />
           <SimilarCards
             id={result.id}
             index={index}
