@@ -26,13 +26,12 @@ function App() {
     setup();
   }, []);
 
-  if (database && searchIndex) {
-    return (
-      <div className="min-h-screen bg-neutral-900 p-10 text-white">
-        <Search index={searchIndex} db={database} />
-      </div>
-    );
-  }
+  return (
+    <div className="min-h-screen bg-neutral-900 p-10 text-white">
+      {database && searchIndex && <Search index={searchIndex} db={database} />}
+      {!database && <p>Loading database...</p>}
+    </div>
+  );
 }
 
 export default App;
