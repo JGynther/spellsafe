@@ -11,7 +11,6 @@ import Search from "./components/search";
 function App() {
   const [database, setDB] = useState<IDBDatabase>();
   const [searchIndex, setSearchIndex] = useState<SearchIndex>();
-  const [isReady, setIsReady] = useState<boolean>(false);
 
   useEffect(() => {
     async function setup() {
@@ -23,12 +22,11 @@ function App() {
 
       setDB(db);
       setSearchIndex(index);
-      setIsReady(true);
     }
     setup();
   }, []);
 
-  if (isReady && database && searchIndex) {
+  if (database && searchIndex) {
     return (
       <div className="min-h-screen bg-neutral-900 p-10 text-white">
         <Search index={searchIndex} db={database} />
