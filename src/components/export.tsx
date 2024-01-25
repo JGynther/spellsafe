@@ -22,7 +22,9 @@ const Export: React.FC<{ db: IDBDatabase }> = ({ db }) => {
           );
 
           const encoded = encodeURI(
-            "data:text/csv;charset=utf-8," + rows.join("\r\n")
+            "data:text/csv;charset=utf-8," +
+              "id,count,count_foil\r\n" +
+              rows.join("\r\n")
           );
 
           window.open(encoded, "_blank");
