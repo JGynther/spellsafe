@@ -29,3 +29,6 @@ dist-ssr
 # Card oracle
 oracle.json
 neighbours.json
+
+# TODO.md
+TODO.md
