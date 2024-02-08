@@ -4,31 +4,21 @@ enum Stores {
   Neighbours = "neighbours",
 }
 
-const connect = (): Promise<IDBDatabase> => {
+const connect = (dbName: string): Promise<IDBDatabase> => {
   return new Promise((resolve) => {
     let db: IDBDatabase;
-    const request = indexedDB.open("CardDatabase", 1);
+    const request = indexedDB.open(dbName, 1);
 
     request.onupgradeneeded = () => {
       db = request.result;
 
-      if (!db.objectStoreNames.contains(Stores.Cards)) {
-        db.createObjectStore(Stores.Cards, { keyPath: "id" });
-      }
-
-      if (!db.objectStoreNames.contains(Stores.Collection)) {
-        db.createObjectStore(Stores.Collection, { keyPath: "id" });
-      }
-
-      if (!db.objectStoreNames.contains(Stores.Neighbours)) {
-        db.createObjectStore(Stores.Neighbours, { keyPath: "id" });
-      }
+      Object.keys(Stores).forEach((store) => {
+        if (db.objectStoreNames.contains(store)) return;
+        db.createObjectStore(store, { keyPath: "id" });
+      });
     };
 
-    request.onsuccess = () => {
-      db = request.result;
-      resolve(db);
-    };
+    request.onsuccess = () => resolve(request.result);
 
     request.onerror = () => {
       throw Error(request.error?.message);
@@ -36,13 +26,13 @@ const connect = (): Promise<IDBDatabase> => {
   });
 };
 
-const isNotSetup = (db: IDBDatabase): Promise<boolean> => {
+const isSetup = (db: IDBDatabase): Promise<boolean> => {
   return new Promise((resolve) => {
     const transaction = db.transaction(Stores.Cards, "readonly");
     const store = transaction.objectStore(Stores.Cards);
     const request = store.count();
-    request.onsuccess = () => resolve(request.result ? false : true);
+    request.onsuccess = () => resolve(!!request.result);
   });
 };
 
-export { connect, isNotSetup, Stores };
+export { connect, isSetup, Stores };
