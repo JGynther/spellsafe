@@ -1,12 +1,18 @@
-import { getCollection } from "../lib/db";
+import { useDatabase } from "../lib/db";
 
-const Export: React.FC<{ db: IDBDatabase }> = ({ db }) => {
+const escapeString = (str: string) => {
+  if (!str.includes(",")) return str;
+  return `"${str}"`;
+};
+
+const Export: React.FC = () => {
+  const db = useDatabase();
   return (
     <div className="mt-10">
       <button
         className="bg-neutral-800 hover:bg-neutral-700 transition-colors border border-neutral-700 rounded-lg px-3 py-1"
         onClick={async () => {
-          const collection = await getCollection(db);
+          const collection = await db.getCollection();
 
           const partial = collection.filter(
             (entry) =>
@@ -16,6 +22,7 @@ const Export: React.FC<{ db: IDBDatabase }> = ({ db }) => {
           const rows = partial.map((entry) =>
             [
               entry.id,
+              escapeString(db.idToName(entry.id)!),
               entry.in_collection.count,
               entry.in_collection.count_foil,
             ].join(",")
@@ -23,7 +30,7 @@ const Export: React.FC<{ db: IDBDatabase }> = ({ db }) => {
 
           const encoded = encodeURI(
             "data:text/csv;charset=utf-8," +
-              "id,count,count_foil\r\n" +
+              "id,name,count,count_foil\r\n" +
               rows.join("\r\n")
           );
 

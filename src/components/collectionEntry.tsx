@@ -1,26 +1,16 @@
 import { useState, useEffect } from "react";
-import {
-  getCollectionForCardID,
-  updateCollectionForCardID,
-  type CollectionEntry,
-} from "../lib/db";
+import { useDatabase, type CollectionEntry } from "../lib/db";
 
-const CollectionEntry: React.FC<{ id: string; db: IDBDatabase }> = ({
-  id,
-  db,
-}) => {
+const CollectionEntry: React.FC<{ id: string }> = ({ id }) => {
   const [entry, setEntry] = useState<CollectionEntry>();
+  const db = useDatabase();
 
   useEffect(() => {
-    async function getEntry() {
-      const entry = await getCollectionForCardID(id, db);
-      setEntry(entry);
-    }
-    getEntry();
-  }, [id, db]);
+    refreshEntry();
+  }, [id]);
 
   const refreshEntry = async () => {
-    const entry = await getCollectionForCardID(id, db);
+    const entry = await db.getCollectionEntry(id);
     setEntry(entry);
   };
 
@@ -49,7 +39,7 @@ const CollectionEntry: React.FC<{ id: string; db: IDBDatabase }> = ({
               count: entry.in_collection.count + 1,
             },
           };
-          await updateCollectionForCardID(updated, db);
+          await db.updateCollectionEntry(updated);
           await refreshEntry();
         }}
       >
@@ -67,7 +57,7 @@ const CollectionEntry: React.FC<{ id: string; db: IDBDatabase }> = ({
               count: Math.max(entry.in_collection.count - 1, 0),
             },
           };
-          await updateCollectionForCardID(updated, db);
+          await db.updateCollectionEntry(updated);
           await refreshEntry();
         }}
       >

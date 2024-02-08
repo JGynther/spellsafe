@@ -1,22 +1,20 @@
-import { type SearchIndex, query } from "../lib/db/search";
-import { getNeighboursForID, type Cards, type Card } from "../lib/db";
+import { useDatabase, type Cards, type Card } from "../lib/db";
 import { useState, useEffect } from "react";
 
 const SimilarCards: React.FC<{
   id: string;
-  db: IDBDatabase;
-  index: SearchIndex;
   setCard: (card: Card) => void;
-}> = ({ id, db, index, setCard }) => {
+}> = ({ id, setCard }) => {
   const [similar, setSimilar] = useState<Cards>([]);
+  const db = useDatabase();
 
   useEffect(() => {
     async function getSimilar() {
-      const similar = await getNeighboursForID(id, db);
-      setSimilar(query.index(index).where("id").isBatch(similar.neighbours));
+      const similar = await db.getNeighbours(id);
+      setSimilar(await db.batchGetCards(similar.neighbours));
     }
     getSimilar();
-  }, [id, db, index]);
+  }, [id]);
 
   if (similar.length === 0) return null;
   return (
