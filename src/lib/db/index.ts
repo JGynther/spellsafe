@@ -142,7 +142,7 @@ class IDBAbstraction {
     return this._nameIndex.get(name);
   }
 
-  searchCards(query: string, n = 10) {
+  searchCards(query: string) {
     if (!query) return [];
 
     const names: { name: string; id: string }[] = [];
@@ -152,7 +152,7 @@ class IDBAbstraction {
         names.push({ name: v, id: k });
     });
 
-    return names.slice(0, n);
+    return names;
   }
 
   idToName(id: string) {

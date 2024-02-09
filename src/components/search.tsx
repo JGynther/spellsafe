@@ -28,7 +28,7 @@ const Search: React.FC = () => {
 
       {autoComplete.length > 0 && (
         <div className="bg-neutral-800 divide-y divide-neutral-700 border-neutral-700 border-x border-b rounded-b-lg overflow-hidden">
-          {autoComplete.map((card) => {
+          {autoComplete.slice(0, 10).map((card) => {
             return (
               <div
                 key={card.id}
@@ -43,6 +43,11 @@ const Search: React.FC = () => {
               </div>
             );
           })}
+          {autoComplete.length > 10 && (
+            <div className="px-5 py-1">
+              + {autoComplete.length - 10} more...
+            </div>
+          )}
         </div>
       )}
 
