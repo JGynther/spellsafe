@@ -20,7 +20,11 @@ const Search: React.FC = () => {
         className={`bg-neutral-800 outline-none px-5 py-3 text-lg border border-neutral-700 ${
           autoComplete.length > 0 ? "rounded-t-lg" : "rounded-lg"
         }`}
-        onChange={async (event) => {
+        onChange={(event) => {
+          const results = db.searchCards(event.target.value);
+          setAutoComplete(results);
+        }}
+        onFocus={(event) => {
           const results = db.searchCards(event.target.value);
           setAutoComplete(results);
         }}
