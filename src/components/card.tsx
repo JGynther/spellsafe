@@ -22,12 +22,15 @@ const CardView: React.FC<{ card: Card }> = ({ card }) => {
             {card.power} / {card.toughness}
           </span>
         )}
-        <div>
-          <div className="flex rounded-lg bg-neutral-800 text-white divide-x divide-neutral-700 border border-neutral-700 text-center whitespace-nowrap max-w-min [&>*]:py-2 [&>*]:px-5">
-            <span>EUR</span>
-            <span>{card.prices.eur || "?"}</span>
-            <span>FOIL {card.prices.eur_foil || "?"}</span>
-          </div>
+        <div className="flex rounded-lg bg-neutral-800 text-white divide-x divide-neutral-700 border border-neutral-700 text-center whitespace-nowrap max-w-min [&>*]:py-2 [&>*]:px-5">
+          <span>EUR</span>
+          <span>{card.prices.eur || "?"}</span>
+          <span>FOIL {card.prices.eur_foil || "?"}</span>
+        </div>
+        <div className="text-sm">
+          <a href={card.scryfall_uri} target="_blank" rel="noreferrer">
+            Open in Scryfall ↗
+          </a>
         </div>
       </div>
     </div>
