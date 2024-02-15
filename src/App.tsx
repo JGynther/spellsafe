@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { IDBAbstraction, databaseContext } from "./lib/db";
 
 import Search from "./components/search";
+import BulkInsert from "./components/bulkInsert";
+import Collection from "./components/collection";
 import Export from "./components/export";
 
 function App() {
@@ -10,8 +12,6 @@ function App() {
   useEffect(() => {
     async function setup() {
       const db = await IDBAbstraction.initNewConnection("CardDatabase");
-      if (!db.isSetup) await db.initialLoad();
-
       setDB(db);
     }
     setup();
@@ -22,7 +22,11 @@ function App() {
       {database && (
         <databaseContext.Provider value={database}>
           <Search />
+          <Collection />
           <Export />
+          {/*
+            <BulkInsert />
+          */}
         </databaseContext.Provider>
       )}
       {!database && <p>Loading database...</p>}

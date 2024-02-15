@@ -12,6 +12,7 @@ type Card = {
   mana_cost: string;
   power?: string;
   toughness?: string;
+  scryfall_uri: string;
 };
 
 type Cards = Card[];
@@ -99,6 +100,7 @@ class IDBAbstraction {
     const db = new IDBAbstraction(connection);
 
     db.isSetup = await isSetup(db._db);
+    if (!db.isSetup) await db.initialLoad(); // Need to do initial load before search indexes
     await db.createSearchIndexes();
 
     return db;

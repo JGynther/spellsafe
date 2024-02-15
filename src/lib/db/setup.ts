@@ -12,7 +12,7 @@ const connect = (dbName: string): Promise<IDBDatabase> => {
     request.onupgradeneeded = () => {
       db = request.result;
 
-      Object.keys(Stores).forEach((store) => {
+      Object.values(Stores).forEach((store) => {
         if (db.objectStoreNames.contains(store)) return;
         db.createObjectStore(store, { keyPath: "id" });
       });

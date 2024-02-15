@@ -1,9 +1,9 @@
 import { Stores } from "./setup";
 
 const loadOracle = async (db: IDBDatabase) => {
-  // Lazy load oracle.json for faster load times after initial setup
-  const oracleData = await import("../../../oracle.json");
-  const oracle = oracleData.default as Record<string, unknown>[];
+  const result = await fetch("/oracle.json");
+  const oracleData = await result.json();
+  const oracle = oracleData as Record<string, unknown>[];
 
   return new Promise<void>((resolve) => {
     const start = Date.now();
@@ -20,8 +20,9 @@ const loadOracle = async (db: IDBDatabase) => {
 };
 
 const loadNeighbours = async (db: IDBDatabase) => {
-  const neighbourData = await import("../../../neighbours.json");
-  const neighbours = neighbourData.default as Record<string, unknown>[];
+  const result = await fetch("/neighbours.json");
+  const neighbourData = await result.json();
+  const neighbours = neighbourData as Record<string, unknown>[];
 
   return new Promise<void>((resolve) => {
     const start = Date.now();
@@ -38,8 +39,10 @@ const loadNeighbours = async (db: IDBDatabase) => {
 };
 
 const bootstrapCollection = async (db: IDBDatabase) => {
-  const oracleData = await import("../../../oracle.json");
-  const oracle = oracleData.default as Record<string, unknown>[];
+  const result = await fetch("/oracle.json");
+  const oracleData = await result.json();
+  const oracle = oracleData as Record<string, unknown>[];
+
   const collection = oracle.map((card) => {
     return {
       id: card.id,
