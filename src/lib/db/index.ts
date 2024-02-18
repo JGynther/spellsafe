@@ -13,6 +13,7 @@ type Card = {
   power?: string;
   toughness?: string;
   scryfall_uri: string;
+  card_faces?: Card[];
 };
 
 type Cards = Card[];

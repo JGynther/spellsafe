@@ -22,13 +22,22 @@ const SimilarCards: React.FC<{
       <h3 className="text-lg font-bold">Similar cards</h3>
       <div className="flex flex-wrap">
         {similar.map((card) => {
+          // FIXME: for some reason a neighbour might not exist?
+          // Temporarily just ignore an undefined card
+          if (!card) return null;
+
+          // For displaying multifaced cards properly
+          const image = card.card_faces
+            ? card.card_faces[0]?.image_uris?.normal
+            : card.image_uris?.normal;
+
           return (
             <div
               key={card.id}
               className="flex flex-col p-3 justify-center items-center"
             >
               <img
-                src={card.image_uris?.normal}
+                src={image}
                 className="rounded-[4.5%] w-40 border border-neutral-700"
                 onClick={() => setCard(card)}
                 role="button"
